@@ -3,23 +3,33 @@ import { useNavigate } from 'react-router-dom';
 
 export const FirstPage = () => {
 
+    const[formError,setFormErrors] = useState({})
     const[details,setDetails]=useState({
         fname:"",
-        lname:"",
-        address:"",
-        city:"",
-        country:""
+        // lname:"",
+        // address:"",
+        // city:"",
+        // country:""
     });
-
+    
     const formSubmit=(e)=>{
-        e.preventDefault();
-        console.log(details);
-       setDetails(details);
+        e.preventDefault(); 
+        setFormErrors(validate(details))
+        setDetails(details);
+   }
+   
+   const validate = (values) =>{
+    const errors = {};
+    if(!values.fname){
+        errors.fname = 'Usernamde is Required'
     }
+    return errors;  
+   }
 
     const formChange=(e)=>
     {
-      setDetails({...details,[e.target.name]:e.target.value})
+      const{fname,value} = e.target;
+      setDetails({...details,[fname]:value})
     }
 
         let navigate=useNavigate();
@@ -38,8 +48,11 @@ export const FirstPage = () => {
                        onChange={formChange}
                          />
             </div>        
+
+                {/* {errors.fname  && <p>{errors.fname}</p>} */}
+            <br/>
                         
-            <div>
+            {/* <div>
             <label>Last Name</label>
                 <input type="text"
                        required
@@ -47,9 +60,9 @@ export const FirstPage = () => {
                        
                        onChange={formChange}
                         />
-            </div>            
+            </div>             */}
             
-            <div>
+            {/* <div>
             <label>Address</label>
                 <input type="text"
                        required
@@ -78,7 +91,7 @@ export const FirstPage = () => {
                        
                        onChange={formChange}
                         />
-            </div>
+            </div> */}
             
             <div> 
                    <button type='submit' className='btn btn-success' onClick={() =>{navigate("/SecondPage",{state:details})}}>Submit</button>
